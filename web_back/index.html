@@ -105,7 +105,36 @@
 
     </script>
 
+<script>
+    $(function () {
+        /* 
+        2、退出登录
+        请求地址：http://localhost:8000/admin/logout 网络地址: https://autumnfish.cn/big/admin/logout
+        请求方式：post
+        请求参数：无
+        返回数据：无
+         */
+        // 按下登出按钮跳转到登录页面
+        $('.icon-tuichu').parent('a').on('click',function (e) {
+            // 阻止默认跳转行为
+            e.preventDefault();
+            // 发送ajax请求
+            $.ajax({
+                type:'post',
+                url: 'https://autumnfish.cn/big/admin/logout',
+                data: {},
+                success: function (backData) {
+                    // 判断返回值code 是否为200
+                    if(backData.code == 200) {
+                        window.location.href = './login.html';
+                    }
+                }
+            });
+
+        });
+    })
     
+    </script>
 
 </body>
 </html>
