@@ -298,7 +298,7 @@
 
 
             <td class="text-center">
-                <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
+                <a href="article_edit.html?id={{v.id}}" class="btn btn-default btn-xs btn_list-edit">编辑</a>
                 <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-delete" data-id="{{v.id}}">删除</a>
             </td>
         </tr>
@@ -402,6 +402,7 @@
                 });
             });
         
+            
         });
         /* 
            9、文章搜索

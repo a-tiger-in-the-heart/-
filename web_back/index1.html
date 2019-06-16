@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="./js/jquery-1.12.4.min.js"></script>
+</head>
+<body>
+    <form action="" id="myFoem">
+
+        <input type="text" name="content">
+        <button class="btn">点击</button>
+    </form>
+    <script>
+        $(function() {
+            $('.btn').on('click',function (e) {
+                e.preventDefault();
+                var form = new FormData($('#myFoem')[0]);
+                console.log(form);
+                
+            });
+        });
+    </script>
+</body>
+</html>

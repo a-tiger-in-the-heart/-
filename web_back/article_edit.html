@@ -15,6 +15,7 @@
     <script src="js/jedate/js/jedate.js"></script>
     <script src="js/tinymce/js/tinymce/tinymce.min.js"></script>
     <script src="js/tinymce/js/tinymce_setup.js"></script>
+    <script src="./js/template-web.js"></script>
 </head>
 
 <body>
@@ -25,36 +26,36 @@
         <div class="container-fluid common_con">
             <form class="form-horizontal article_form">
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">文章标题：</label>
+                    <label for="inputTitle" class="col-sm-2 control-label ">文章标题：</label>
                     <div class="col-sm-10">
-                        <input type="email" class="form-control" id="inputEmail3" value="文章标题文字">
+                        <input type="text" class="form-control" id="inputTitle" value="文章标题文字" name="title">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">文章封面：</label>
                     <div class="col-sm-10">
                         <img src="images/pic06.jpg" class="article_cover">
-                        <input type="file" id="exampleInputFile">
+                        <input type="file" id="exampleInputFile" >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">文章类别：</label>
+                    <label for="inputSelect" class="col-sm-2 control-label">文章类别：</label>
                     <div class="col-sm-4">
-                        <select class="form-control">
-                            <option>类别一</option>
-                            <option>类别二</option>
-                            <option>类别三</option>
-                            <option selected>类别四</option>
-                            <option>类别五</option>
+                        <select class="form-control" id="inputSelect" name="type">
+                            <option value="1">类别一</option>
+                            <option value="2">类别二</option>
+                            <option value="3" selected>类别三</option>
+                            <option value="4">类别四</option>
+                            <option value="5">类别五</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">发布时间：</label>
+                    <label for="dateinput" class="col-sm-2 control-label">发布时间：</label>
                     <div class="col-sm-4">
 
                         <div class="input-group">
-                            <input type="text" class="form-control" value="2019-05-17" id="dateinput">
+                            <input type="text" class="form-control" value="2019-05-17" id="dateinput" name="date">
                             <span class="input-group-btn">
                                 <button class="btn btn-default" type="button"
                                     onclick="jeDate('#dateinput',{trigger:false,format: 'YYYY-MM-DD'})"><i
@@ -64,7 +65,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail3" class="col-sm-2 control-label">文章内容：</label>
+                    <label for="rich_content" class="col-sm-2 control-label">文章内容：</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="rich_content" name="content" placeholder="文章内容"
                             value="文章内容">
@@ -72,23 +73,130 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success">修改</button>
+                        <button type="submit" class="btn btn-success btn-revise">修改</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-<script>
-$(function() {
-    // 添加图片预览功能 change 事件是当file选取的文件文件发生改变便会触发
-    $('#exampleInputFile').on('change',function(){
-        var file = this.files[0];
-        var url = URL.createObjectURL(file);
-        $('.article_cover').attr('src',url);
-    });
-});
+    <script id="temp_options" type="text/html">
+        {{each data v}}
+        <option value="{{v.id}}">{{v.name}}</option>
+        {{/each}}
+    </script>
+    <script>
+        $(function () {
+            // 页面一加载就获取文章id的内容
+            var id = window.location.search.split('=')[1];
 
-</script>
+            function getArticleContent() {
+                // 获取本地存储的id
+
+                console.log(id);
+
+                $.ajax({
+                    type: 'get',
+                    url: 'http://localhost:8000/admin/search',
+                    data: {
+                        id: id,
+                    },
+                    success: function (backData) {
+                        if (backData.code == 200) {
+                            console.log(backData);
+                            // 把响应回来的数据添加到各个输入框中
+                            $('#inputTitle').val(backData.data.title);
+                            $('.article_cover').attr('src', backData.data.cover);
+                            $('#inputSelect').val(backData.data.type);
+                            $('#dateinput').val(backData.data.date);
+                            $('#rich_content').val(backData.data.content);
+                            // $('#exampleInputFile').val(backData.data.cover);
+                            /* 
+                            1、如果当前页面只有一个编辑器：
+                            获取内容：tinyMCE.activeEditor.getContent()
+                            设置内容：tinyMCE.activeEditor.setContent(“需要设置的编辑器内容”)
+                             */
+
+                        }
+                    }
+                });
+            };
+            getArticleContent();
+            // 页面一开始 就获取文章类别
+
+            // 封装页面一开始就获取文章类别的函数
+            function getArticleName() {
+                // 发送ajax请求 获取文章类别
+                $.ajax({
+                    type: 'get',
+                    url: 'http://localhost:8000/admin/category_search',
+                    data: {},
+                    success: function (backData) {
+                        // 调用模板引擎
+                        var resHtml = template('temp_options', backData);
+                        $('#inputSelect').html(resHtml);
+                    }
+                });
+            }
+            getArticleName();
+            // 添加图片预览功能 change 事件是当file选取的文件文件发生改变便会触发
+            $('#exampleInputFile').on('change', function () {
+                var file = this.files[0];
+                var url = URL.createObjectURL(file);
+                $('.article_cover').attr('src', url);
+            });
+
+            // 添加修改功能  
+            $('.btn-revise').on('click', function (e) {
+
+             
+                e.preventDefault();
+
+                
+                // 获取表单元素的所有值
+                var formData = new FormData($('.form-horizontal')[0]);
+                formData.append('cover', $('.article_cover').attr('src'));
+                formData.append('id', id);
+                // console.log(formData.get('cover'));
+                
+                console.log(formData);
+                // 发送ajax请求
+                $.ajax({
+                    type: 'post',
+                    url: 'http://localhost:8000/admin/article_edit',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(backData) {
+                        if(backData.code == 200) {
+                            console.log(backData);
+                            
+                            // 清空表单
+                            $('#inputTitle').val('');
+                            $('.article_cover').attr('src', '');
+                            $('#inputSelect').val('');
+                            $('#dateinput').val('');
+                            $('#rich_content').val('');
+                        }
+                    }
+                });
+
+
+            })
+        });
+        /* 
+            11、文章编辑
+            请求地址：http://localhost:8000/admin/article_edit 网络地址: https://autumnfish.cn/big/admin/article_edit
+            请求方式：post
+            请求参数：
+            名称 类型 说明
+            id number 文章 id
+            title string 文章标题
+            cover file 文章封面图片
+            type number 文章类型 id
+            date string 日期
+            content string 文章内容
+         */
+    </script>
 </body>
 
 </html>
