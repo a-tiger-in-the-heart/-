@@ -24,16 +24,17 @@
                 <div class="col-xs-6">
                     <form class="form-inline">
                         <select id="selCategory" name="" class="form-control input-sm">
-                            <option>所有分类</option>
+                            <!-- <option value="">所有分类</option>
                             <option>未分类</option>
                             <option>奇趣事</option>
                             <option>会生活</option>
-                            <option>爱旅行</option>
+                            <option>爱旅行</option> -->
                         </select>
                         <select id="selStatus" name="" class="form-control input-sm">
-                            <option>所有状态</option>
-                            <option >草稿</option>
-                            <option >已发布</option>
+                            <!-- 注意 如果这里不加value属性 获取便是内容 但是内容并不是我们要的参数 我们此时需要空 -->
+                            <option value="">所有状态</option>
+                            <option>草稿</option>
+                            <option>已发布</option>
                         </select>
                         <button id="btnSearch" class="btn btn-default btn-sm">筛选</button>
                     </form>
@@ -59,7 +60,7 @@
 
 
                     <tr>
-                        
+
                         <td>王积千造统最头</td>
                         <td>杰克</td>
                         <td>奇趣事</td>
@@ -78,7 +79,7 @@
 
 
                     <tr>
-                     
+
                         <td>级电使正回</td>
                         <td>肉丝</td>
                         <td>爱旅行</td>
@@ -97,7 +98,7 @@
 
 
                     <tr>
-                       
+
                         <td>近难领管年算</td>
                         <td>杰克</td>
                         <td>会生活</td>
@@ -116,7 +117,7 @@
 
 
                     <tr>
-                       
+
                         <td>龙大实究</td>
                         <td>杰克</td>
                         <td>未分类</td>
@@ -135,7 +136,7 @@
 
 
                     <tr>
-                      
+
                         <td>算性得走来拉</td>
                         <td>肉丝</td>
                         <td>奇趣事</td>
@@ -154,7 +155,7 @@
 
 
                     <tr>
-                      
+
                         <td>几平会出气</td>
                         <td>管理员</td>
                         <td>奇趣事</td>
@@ -173,7 +174,7 @@
 
 
                     <tr>
-                      
+
                         <td>世团先证型角</td>
                         <td>杰克</td>
                         <td>奇趣事</td>
@@ -192,7 +193,7 @@
 
 
                     <tr>
-                      
+
                         <td>构更反步五</td>
                         <td>肉丝</td>
                         <td>奇趣事</td>
@@ -211,7 +212,7 @@
 
 
                     <tr>
-                       
+
                         <td>组方些</td>
                         <td>肉丝</td>
                         <td>会生活</td>
@@ -230,7 +231,7 @@
 
 
                     <tr>
-                      
+
                         <td>日做发光成</td>
                         <td>管理员</td>
                         <td>爱旅行</td>
@@ -251,38 +252,57 @@
             </table>
 
             <div class="row text-center">
-            <ul class="pagination pagination-sm">
-                <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
-                <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
-                <li class="page-item active"><a href="#" class="page-link">1</a></li>
-                <li class="page-item"><a href="#" class="page-link">2</a></li>
-                <li class="page-item"><a href="#" class="page-link">3</a></li>
-                <li class="page-item"><a href="#" class="page-link">4</a></li>
-                <li class="page-item"><a href="#" class="page-link">5</a></li>
-                <li class="page-item"><a href="#" class="page-link">6</a></li>
-                <li class="page-item"><a href="#" class="page-link">7</a></li>
-                <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
-                <li class="page-item last"><a href="#" class="page-link">尾页</a></li>
-            </ul>
-        </div>
+                <ul class="pagination pagination-sm">
+                    <li class="page-item first disabled"><a href="#" class="page-link">首页</a></li>
+                    <li class="page-item prev disabled"><a href="#" class="page-link">上一页</a></li>
+                    <li class="page-item active"><a href="#" class="page-link">1</a></li>
+                    <li class="page-item"><a href="#" class="page-link">2</a></li>
+                    <li class="page-item"><a href="#" class="page-link">3</a></li>
+                    <li class="page-item"><a href="#" class="page-link">4</a></li>
+                    <li class="page-item"><a href="#" class="page-link">5</a></li>
+                    <li class="page-item"><a href="#" class="page-link">6</a></li>
+                    <li class="page-item"><a href="#" class="page-link">7</a></li>
+                    <li class="page-item next"><a href="#" class="page-link">下一页</a></li>
+                    <li class="page-item last"><a href="#" class="page-link">尾页</a></li>
+                </ul>
+            </div>
 
         </div>
     </div>
 
     <script>
         // 设置左侧菜单
-        $('#release_btn').click(function(){
-            window.parent.setMenu(1,1);
+        $('#release_btn').click(function () {
+            window.parent.setMenu(1, 1);
         })
     </script>
+    <!-- 下拉框的模板引擎 -->
     <script id="temp_select" type="text/html">
-       
+        <option value="">所有分类</option>
+        {{each data v}}
+        <option value="{{v.id}}">{{v.name}}</option>
+        {{/each}}
+    </script>
+    <!-- 文章模板引擎 -->
+    <script id="temp_article" type="text/html">
+        {{each data v}}
+        <tr>
 
-                <option value="">所有分类</option>
-                {{each data v}}
-                <option value="{{v.id}}">{{v.name}}</option>
-               {{/each}}
-            
+            <td>{{v.title}}</td>
+            <td>{{v.author}}</td>
+            <td>{{v.type}}</td>
+            <td class="text-center">{{v.date}}</td>
+
+
+            <td class="text-center">{{v.state}}</td>
+
+
+            <td class="text-center">
+                <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
+                <a href="javascript:void(0);" class="btn btn-danger btn-xs btn-delete" data-id="{{v.id}}">删除</a>
+            </td>
+        </tr>
+        {{/each}}
     </script>
     <script>
         /* 
@@ -299,27 +319,110 @@
         id number 文章 id，根据 id 查询时，其余参数可以不选择
         
          */
-    $(function () {
-        // 选取下拉框中的类别,然后进行筛选
-        // 获取文章类别 发送ajax请求
-        function getArticleCategory() {
-          $.ajax({
-              type:'get',
-              url: 'http://localhost:8000/admin/category_search',
-              data:{},
-              success: function(backData) {
-                // 调用模板引擎
-                var resHtml = template('temp_select',backData);
-                // 找到你要生成的标签的父级进行添加内容
-                $('#selCategory').html(resHtml);
-              }
-          });
-        };
-        getArticleCategory();
-        // 点击
+        $(function () {
+            // 选取下拉框中的类别,然后进行筛选
+            // 获取文章类别 发送ajax请求 封装函数
+            function getArticleCategory() {
+                $.ajax({
+                    type: 'get',
+                    url: 'http://localhost:8000/admin/category_search',
+                    data: {},
+                    success: function (backData) {
+                        if (backData.code == 200) {
+                            // 调用模板引擎
+                            var resHtml = template('temp_select', backData);
+                            // 找到你要生成的标签的父级进行添加内容
+                            $('#selCategory').html(resHtml);
+                        }
 
-    });
-    
+                    }
+                });
+            };
+            // 一开始就调用获取文章类别
+            getArticleCategory();
+
+            // 封装获取文章的函数
+            function getArticle() {
+                // 获取搜索框中值
+                var searchVal = parent.$('.serch_input').val();
+                var articleCate = $('#selCategory').val();
+                var selStatus = $('#selStatus').val();
+                // 发送ajax请求
+                $.ajax({
+                    type: 'get',
+                    url: 'http://localhost:8000/admin/search',
+                    data: {
+                        key: searchVal,
+                        type: articleCate,
+                        state: selStatus,
+                        page: 1,
+                        perpage: 5
+                    },
+                    success: function (backData) {
+                        console.log(backData);
+                        // 调用模板引擎
+                        if (backData.code == 200) {
+                            var resHtml = template('temp_article', backData);
+                            $('tbody').html(resHtml);
+                        }
+
+                    }
+                });
+            };
+            // 页面一刷新就调用函数  获取文章
+            getArticle();
+            // 点击筛选按钮 获取文章内容
+            $('#btnSearch').on('click', function (e) {
+                // 阻止默认行为
+                e.preventDefault();
+                getArticle();
+            });
+
+            // 点击删除按钮 删除文章
+            $('tbody').on('click', 'a.btn-delete', function () {
+                // 获取文章id 已存放于自定义属性中
+                var articleId = $(this).attr('data-id');
+                // 转变this
+                var that = this;
+                // 发送ajax请求
+                $.ajax({
+                    type: 'get',
+                    url: 'http://localhost:8000/admin/article_delete',
+                    data: {
+                        id: articleId
+                    },
+                    success: function (backData) {
+                        console.log(backData);
+
+                        if (backData.code == 200) {
+                            // 数据删除后 再把dom数中的tr删除掉
+                            $(that).parent().parent().remove();
+                        }
+                    }
+                });
+            });
+
+        });
+        /* 
+           9、文章搜索
+           请求地址：http://localhost:8000/admin/search 网络地址: https://autumnfish.cn/big/admin/search
+           请求方式：get
+           请求参数：
+           名称 类型 说明
+           key string 搜索关键词，可以为空，为空返回某类型所有文章
+           type string 文章类型，可以为空，为空返回所有类型文章
+           state string 文章状态，草稿或者已发布
+           page number 当前页，为空返回第 1 页
+           perpage number 每页显示条数，为空默认每页 6 条
+           id number 文章 id，根据 id 查询时，其余参数可以不选择
+
+            2、删除文章
+            请求地址：http://localhost:8000/admin/article_delete 网络地址: https://autumnfish.cn/big/admin/article_delete
+            请求方式：get
+            请求参数：
+            名称 类型 说明
+            id number 文章 id
+         */
     </script>
 </body>
 
